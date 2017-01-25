@@ -1,0 +1,650 @@
+name: course_info_query
+states:
+    init:
+        component: initialize_course_data
+    greeting:
+        component: meya.text_buttons
+        properties:
+          text: Howdy! I'm the Rice Owl. Do you want to search courses or browsing news or having fun
+          mode: buttons
+          buttons:
+            - text: Course
+              action: courses_ask
+            - text: News
+              action: news_ask
+            - text: Rice Weather 
+              action: weather_ask
+            - text: Campus Anecdote
+              action: anecdote_ask
+            - text: Surprise
+              action: surprise_ask
+        transitions:
+            courses_ask: courses_a
+            news_ask: news_a
+            weather_ask: weather_a
+            anecdote_ask: anecdote_a
+            surprise_ask: surprise_a
+    weather_a:
+        component: Weather
+        transitions:
+            next: greeting
+        delay:
+            relative: 1
+    news_a:
+        component: get_latest_news
+        transitions:
+            next: greeting
+        delay:
+            relative: 1
+    surprise_a:
+        component: Giphy
+        delay:
+            relative: 1
+    text_buttons_state:
+        component: meya.text_buttons
+        properties:
+            text: Another one?
+            output: button_click
+            buttons:
+                - text: 'Yes'
+                  action: next
+                - text: 'No'
+                  action: next
+    equal_check_state:
+        component: meya.conditional_equal
+        properties:
+            value1: '{{ flow.button_click }}'
+            value2: 'Yes'
+        transitions:
+            equal: surprise_a
+            notequal: surprise_nope
+    surprise_nope:
+        component: meya.text
+        properties:
+            text: "OK. Wish you happy every day! Hoo-hoo..."
+        transitions:
+            next: greeting
+        delay:
+            relative: 1
+    anecdote_a:
+        component: fun
+        delay:
+            relative: 1
+    text_buttons_state_fun:
+        component: meya.text_buttons
+        properties:
+            text: Another one?
+            output: button_click
+            buttons:
+                - text: 'Yes'
+                  action: next
+                - text: 'No'
+                  action: next
+    equal_check_state_anecdote:
+        component: meya.conditional_equal
+        properties:
+            value1: '{{ flow.button_click }}'
+            value2: 'Yes'
+        transitions:
+            equal: anecdote_a
+            notequal: anecdote_nope
+    anecdote_nope:
+        component: meya.text
+        properties:
+            text: "OK. I know. Wish you happy every day!"
+        transitions:
+            next: greeting        
+    courses_a:
+        component: meya.text_buttons
+        properties:
+          text: Do you want to search courses generally or specifically
+          mode: buttons
+          buttons:
+            - text: Specific
+              action: specific
+            - text: General
+              action: general
+        transitions:
+            specific: state_specific
+            general: state_general
+    state_general:
+        component: meya.text_buttons
+        properties:
+            text: Search by Initial Word
+            mode: Buttons
+            buttons:
+            - text: A--B
+              action: actionA
+            - text: C
+              action: actionB
+            - text: E
+              action: actionC
+            - text: F--K
+              action: actionD
+            - text: L--M 
+              action: actionE
+            - text: N--W
+              action: actionF
+        transitions:
+            actionA: actionA_state
+            actionB: actionB_state
+            actionC: actionC_state
+            actionD: actionD_state
+            actionE: actionE_state
+            actionF: actionF_state
+    actionA_state:
+        component: meya.text_buttons
+        properties:
+            text: Schedule of Course Offerings
+            mode: Buttons
+            buttons:
+            - text: Air Force Science
+              action: next
+              data:
+                dep_name: Air Force Science
+            - text: Anthropology
+              action: next
+              data:
+                dep_name: Anthropology
+            - text: Applied Physics
+              action: next
+              data:
+                dep_name: Applied Physics
+            - text: Arabic
+              action: next
+              data:
+                dep_name: Arabic
+            - text: Architecture
+              action: next
+              data:
+                dep_name: Architecture
+            - text: Astronomy
+              action: next
+              data:
+                dep_name: Astronomy
+            - text: Biochemistry & Cell Biology
+              action: next
+              data:
+                dep_name: Biochemistry & Cell Biology 
+            - text: Bioengineering
+              action: next
+              data:
+                dep_name: Bioengineering 
+            - text: Business
+              action: next
+              data:
+                dep_name: Business
+        transitions:
+            next: next
+    actionB_state:
+        component: meya.text_buttons
+        properties:
+            text: Schedule of Course Offerings
+            mode: Buttons
+            buttons:
+            - text: Center for Civic Leadership
+              action: next
+              data:
+                dep_name: Center for Civic Leadership
+            - text: Chemical & Biomolecular Eng
+              action: next
+              data:
+                dep_name: Chemical & Biomolecular Eng 
+            - text: Chemistry
+              action: next
+              data:
+                dep_name: Chemistry 
+            - text: Chinese
+              action: next
+              data:
+                dep_name: Chinese
+            - text: Civil and Environmental Eng
+              action: next
+              data:
+                dep_name: Civil and Environmental Eng
+            - text: Classical Studies
+              action: next
+              data:
+                dep_name: Classical Studies
+            - text: Cognitive Sciences
+              action: next
+              data:
+                dep_name: Cognitive Sciences
+            - text: College Course
+              action: next
+              data:
+                dep_name: College Course
+            - text: Comp. & Applied Mathematics
+              action: next
+              data:
+                dep_name: Comp. & Applied Mathematics 
+            - text: Computer Science
+              action: next
+              data:
+                dep_name: Computer Science
+        transitions: 
+              next: next
+    actionC_state:
+        component: meya.text_buttons
+        properties:
+            text: Schedule of Course Offerings
+            mode: Buttons
+            buttons:
+            - text: Earth Science
+              action: next
+              data:
+                dep_name: Earth Science
+            - text: Ecology & Evolutionary Biology
+              action: next
+              data: 
+                dep_name: Ecology & Evolutionary Biology
+            - text: Economics
+              action: next
+              data: 
+                dep_name: Economics
+            - text: Education
+              action: next
+              data: 
+                dep_name: Education
+            - text: Electrical & Comp. Engineering
+              action: next
+              data: 
+                dep_name: Electrical & Comp. Engineering
+            - text: Emergency Med Studies / Practice
+              action: next
+              data: 
+                dep_name: Emergency Med Studies / Practice 
+            - text: Engineering
+              action: next
+              data: 
+                dep_name: Engineering
+            - text: English
+              action: next
+              data: 
+                dep_name: English
+            - text: Environmental Studies
+              action: next
+              data: 
+                dep_name: Environmental Studies
+            - text: Executive Management
+              action: next
+              data: 
+                dep_name: Executive Management
+        transitions:
+            next: next
+    actionD_state:
+        component: meya.text_buttons
+        properties:
+            text: Schedule of Course Offerings
+            mode: Buttons
+            buttons:
+            - text: Film
+              action: next
+              data: 
+                dep_name: Film
+            - text: First-Yr Writing Intensive Sem
+              action: next
+              data: 
+                dep_name: First-Yr Writing Intensive Sem
+            - text: French Studies
+              action: next
+              data: 
+                dep_name: French Studies
+            - text: Freshmen Seminar
+              action: next
+              data: 
+                dep_name: Freshmen Seminar
+            - text: German 
+              action: next
+              data: 
+                dep_name: German
+            - text: Global Affairs
+              action: next
+              data: 
+                dep_name: Global Affairs
+            - text: Global Health Technologies
+              action: next
+              data: 
+                dep_name: Global Health Technologies 
+            - text: Greek
+              action: next
+              data: 
+                dep_name: Greek
+            - text: Health Sciences
+              action: next
+              data: 
+                dep_name: Health Sciences
+            - text: Hindi
+              action: next
+              data: 
+                dep_name: Hindi
+            - text: History
+              action: next
+              data: 
+                dep_name: History
+            - text: Honors Program
+              action: next
+              data: 
+                dep_name: Honors Program
+            - text: Humanities
+              action: next
+              data: 
+                dep_name: Humanities
+            - text: Humanities Research Center
+              action: next
+              data: 
+                dep_name: Humanities Research Center 
+            - text: Italian Language and Culture
+              action: next
+              data: 
+                dep_name: Italian Language and Culture 
+            - text: Japanese
+              action: next
+              data: 
+                dep_name: Japanese
+            - text: Jewish Studies
+              action: next
+              data: 
+                dep_name: Jewish Studies
+            - text: Keck Center
+              action: next
+              data: 
+                dep_name: Keck Center
+            - text: Kinesiology
+              action: next
+              data: 
+                dep_name: Kinesiology
+            - text: Korean
+              action: next
+              data: 
+                dep_name: Korean
+        transitions:
+            next: next
+    actionE_state:
+        component: meya.text_buttons
+        properties:
+            text: Schedule of Course Offerings
+            mode: Buttons
+            buttons:
+            - text: Latin
+              action: next
+              data: 
+                dep_name: Latin 
+            - text: Latin American Studies
+              action: next
+              data: 
+                dep_name: Latin American Studies 
+            - text: Liberal Studies Core / Capstone
+              action: next
+              data: 
+                dep_name: Liberal Studies Core / Capstone  
+            - text: Lifetime Phys Activity Credit
+              action: next
+              data: 
+                dep_name: Lifetime Phys Activity Credit
+            - text: Lifetime Phys Activity Program 
+              action: next
+              data: 
+                dep_name: Lifetime Phys Activity Program   
+            - text: Linguistics 
+              action: next
+              data: 
+                dep_name: Linguistics
+            - text: MBA for Professionals - Evening
+              action: next
+              data: 
+                dep_name: MBA for Professionals - Evening
+            - text: MBA for Professinals - Weekend
+              action: next
+              data: 
+                dep_name: MBA for Professinals - Weekend
+            - text: Management 
+              action: next
+              data: 
+                dep_name: Management
+            - text: Managerial Studies 
+              action: next
+              data: 
+                dep_name: Managerial Studies
+            - text: Master Accounting 
+              action: next
+              data: 
+                dep_name: Master Accounting
+            - text: Materials Science & NanoEng
+              action: next
+              data: 
+                dep_name: Materials Science & NanoEng 
+            - text: Mathematics
+              action: next
+              data: 
+                dep_name: Mathematics
+            - text: Mechanical Engineering
+              action: next
+              data: 
+                dep_name: Mechanical Engineering
+            - text: Medieval / Early Modern Studies
+              action: next
+              data: 
+                dep_name: Medieval / Early Modern Studies
+            - text: Mgmt Integrated Crse Offering 
+              action: next
+              data: 
+                dep_name: Mgmt Integrated Crse Offering 
+            - text: Military Science
+              action: next
+              data: 
+                dep_name: Military Science
+            - text: Music
+              action: next
+              data: 
+                dep_name: Music
+        transitions:
+            next: next
+    actionF_state:
+        component: meya.text_buttons
+        properties:
+            text: Schedule of Course Offerings
+            mode: Buttons
+            buttons:
+            - text: Natural Sciences
+              action: next
+              data: 
+                dep_name: Natural Sciences
+            - text: Naval Science
+              action: next
+              data: 
+                dep_name: Naval Science
+            - text: Neuroscience
+              action: next
+              data: 
+                dep_name: Neuroscience
+            - text: Philosophy
+              action: next
+              data: 
+                dep_name: Philosophy
+            - text: Photography
+              action: next
+              data: 
+                dep_name: Photography
+            - text: Physcis
+              action: next
+              data: 
+                dep_name: Physcis
+            - text: Policy Studies
+              action: next
+              data: 
+                dep_name: Policy Studies
+            - text: Political Science
+              action: next
+              data: 
+                dep_name: Political Studies
+            - text: Politics, Law, Social Thought
+              action: next
+              data: 
+                dep_name: Politics, Law, Social Thought 
+            - text: Portuguese
+              action: next
+              data: 
+                dep_name: Portuguese 
+            - text: Psychology
+              action: next
+              data: 
+                dep_name: Psychology
+            - text: Religion
+              action: next
+              data: 
+                dep_name: Religion
+            - text: Russian
+              action: next
+              data: 
+                dep_name: Russian
+            - text: Social Sciences
+              action: next
+              data: 
+                dep_name: Social Sciences
+            - text: Sociology 
+              action: next
+              data: 
+                dep_name: Sociology 
+            - text: Spanish
+              action: next
+              data: 
+                dep_name: Spanish
+            - text: Spanish & Portuguese
+              action: next
+              data: 
+                dep_name: Spanish & Portuguese
+            - text: Sport Management
+              action: next
+              data: 
+                dep_name: Sport Management 
+            - text: Statistics
+              action: next
+              data: 
+                dep_name: Statistics 
+            - text: Systems/Synthetic/Phys Biology
+              action: next
+              data: 
+                dep_name: Systems/Synthetic/Phys Biology 
+            - text: Theatre
+              action: next
+              data: 
+                dep_name: Theatre 
+            - text: Tibetan
+              action: next
+              data: 
+                dep_name: Tibetan 
+            - text: University Courses
+              action: next
+              data: 
+                dep_name: University Cources 
+            - text: Visual Arts
+              action: next
+              data: 
+                dep_name: Visual Arts
+            - text: Women, Gender, & Sexuality
+              action: next
+              data: 
+                dep_name: Women, Gender, & Sexuality
+        transitions:
+           next: next
+    next:
+        component: meya.input_string
+        properties:
+            text: Do you have some interest areas? Yes or No
+            output: answer
+    filter:
+        component: generalCourse
+        transitions:
+          have: have
+          decline: decline
+    decline:
+        component: listDepCourses
+        transitions:
+            decline_next: decline_next
+    have:
+        component: meya.input_string
+        properties:
+            text: Please input, only one word
+            output: interest
+    filter1:
+        component: interest_course
+        transitions:
+            next: greeting
+    decline_next:
+        transitions:
+            next: greeting
+    state_specific:
+        component: meya.text_buttons
+        properties:
+          text: How do you want to customize your search
+          mode: buttons
+          buttons:
+            - text: 3-digit number, like 101
+              action: query_name
+            - text: Location,Like DCH
+              action: query_location
+            - text: Subject,Like COMP or STAT 
+              action: query_subject
+        transitions:
+            query_name: state_query_name
+            query_location: state_query_location
+            query_subject: state_query_subject
+            return: true
+    state_query_name:
+        component: meya.input_string
+        properties: 
+            text: "Please input the number"
+            output: course_name
+        transitions:
+            next: start_query_name
+    start_query_name:
+        component: query_name
+        transitions:
+            next: state_medium
+    state_medium:
+        component: meya.text_buttons
+        properties:
+            text: "Subject:COMP504 title:GR OBJ-ORIENTED PROG & DESIGN, location:OED 112, DCH 1046,description:Discover how stat-of-the-art object-orient programming and design techniques can create globe-spanning software systems that are both flexible and scalable. Learn how software design patterns are used in multiple programming paradigms. Explore highly decoupled systems with dynamically configurable behaviors. Highly recommended for anyone interested in building large systems and software engineering. Basic proficiency in Java is required. Students may not receive credit for both COMP 310/510 and COMP 404/504."
+            buttons:
+            -   text: This course is great!
+                action: next
+            -   text: This course is not so great!
+                action: next
+            -   text: I want to know where I am
+                action: next
+        transitions:
+            next: state_loc
+    state_loc:
+        component: meya.input_location
+        properties:
+            text: "Set your location pin for me. Thanks!"
+            output: location
+    state_loc_next:
+        component: route_info
+        transitions:
+            next: state_specific
+    state_query_location:
+        component: meya.input_string
+        properties: 
+            text: "Please input the location"
+            output: course_location;
+        transitions:
+            next: start_query_location
+    start_query_location:
+        component: query_location
+        return: true
+    state_query_subject:
+        component: meya.input_string
+        properties: 
+            text: "Please input the subject"
+            output: course_subject
+        transitions:
+            next: start_subject_subject
+    start_query_subject:
+        component: query_subject
+        return: true
+    # specific:
+    #     component: Hello_World
+    #     transitions:
+    #     return: true
